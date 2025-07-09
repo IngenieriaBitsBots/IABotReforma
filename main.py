@@ -192,6 +192,10 @@ from urllib.parse import urlencode
 from dotenv import load_dotenv
 import asyncio
 from collections import defaultdict
+import os
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
+import asyncio
 
 call_guid_to_caller = defaultdict(lambda: "+573000000000")
 
@@ -367,5 +371,7 @@ async def callback_events_handler(contextId):
 
     return Response(status=200)
 
-if __name__ == '__main__':
-    app.run(port=8080)
+if __name__ == "__main__":
+    config = Config()
+    config.bind = [f"0.0.0.0:{os.environ.get('PORT', '8000')}"]
+    asyncio.run(serve(app, config))
