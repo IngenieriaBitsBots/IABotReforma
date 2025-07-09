@@ -1,0 +1,9 @@
+quart>=0.18.0
+hypercorn
+azure-core
+azure-communication-callautomation
+azure-eventgrid
+httpx
+openai
+requests
+python-dotenv
