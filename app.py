@@ -271,23 +271,24 @@ async def handle_reforma_conversacion(call_connection_client: CallConnectionClie
 #     return render_template("index.html")
 
 
-# @app.route("/api/incomingCall", methods=["POST"])
-# async def incoming_call_handler():
-#     events = await request.json
-#     for event_dict in events:
-#         event = EventGridEvent.from_dict(event_dict)
-#         if event.event_type == SystemEventNames.EventGridSubscriptionValidationEventName:
-#             return {"validationResponse": event.data["validationCode"]}
-#         elif event.event_type == "Microsoft.Communication.IncomingCall":
-#             incoming_call_context = event.data["incomingCallContext"]
-#             caller_raw_id = event.data["from"]["rawId"]  # <-- IMPORTANTE
-#             caller_number = caller_raw_id.replace("4:", "")
-#             call_guid = str(uuid.uuid4())
-#             call_guid_to_caller[call_guid] = caller_number
-#             callback_uri = f"{CALLBACK_EVENTS_URI}/{call_guid}?callerId={caller_number}"
-#             await answer_call(incoming_call_context, callback_uri)
-#             app.logger.info(f"✅ Llamada respondida correctamente de {caller_number}.")
-#     return Response(status=200)
+
+@app.route("/api/incomingCall", methods=["POST"])
+async def incoming_call_handler():
+    events = await request.json
+    for event_dict in events:
+        event = EventGridEvent.from_dict(event_dict)
+        if event.event_type == SystemEventNames.EventGridSubscriptionValidationEventName:
+            return {"validationResponse": event.data["validationCode"]}
+        elif event.event_type == "Microsoft.Communication.IncomingCall":
+            incoming_call_context = event.data["incomingCallContext"]
+            caller_raw_id = event.data["from"]["rawId"]  # <-- IMPORTANTE
+            caller_number = caller_raw_id.replace("4:", "")
+            call_guid = str(uuid.uuid4())
+            call_guid_to_caller[call_guid] = caller_number
+            callback_uri = f"{CALLBACK_EVENTS_URI}/{call_guid}?callerId={caller_number}"
+            await answer_call(incoming_call_context, callback_uri)
+            app.logger.info(f"✅ Llamada respondida correctamente de {caller_number}.")
+    return Response(status=200)
 
 @app.route("/api/incomingCall", methods=["POST"])
 async def incoming_call():
