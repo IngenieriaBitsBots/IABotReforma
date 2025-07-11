@@ -81,17 +81,16 @@ async def iniciar_reconocimiento(call_connection_client, target_participant):
 #     play_source = TextSource(text=text_to_play, voice_name=SPEECH_TO_TEXT_VOICE)
 #     await call_connection_client.play_media_to_all(play_source)
 
-async def handle_play(call_connection_client, text_to_play: str):
-    ssml_text = f"""
-    <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
-           xmlns:mstts="http://www.w3.org/2001/mstts"
-           xml:lang="es-CO">
+async def handle_play(call_connection_client: CallConnectionClient, text_to_play: str):
+    sanitized_text = html.escape(text_to_play)
+    ssml = f"""<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
+    xmlns:mstts="http://www.w3.org/2001/mstts" xml:lang="es-CO">
         <voice name="{SPEECH_TO_TEXT_VOICE}">
-            <prosody rate="slow">{text_to_play}</prosody>
+            <prosody rate="-18%">{sanitized_text}</prosody>
         </voice>
-    </speak>
-    """
-    ssml_source = SsmlSource(ssml_text=ssml_text)
+    </speak>"""
+
+    ssml_source = SsmlSource(ssml_text=ssml)
     await call_connection_client.play_media_to_all(ssml_source)
 
 async def handle_reforma_conversacion(call_connection_client: CallConnectionClient, call_connection_id: str, target_participant: PhoneNumberIdentifier):
