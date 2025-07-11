@@ -200,10 +200,10 @@ async def callback_events_handler(contextId):
 
     return Response(status=200)
 
-# if __name__ == "__main__":
-#     config = Config()
-#     config.bind = [f"0.0.0.0:{os.environ.get('PORT', '8000')}"]
-#     asyncio.run(serve(app, config))
+if __name__ == "__main__":
+    config = Config()
+    config.bind = [f"0.0.0.0:{os.environ.get('PORT', '8000')}"]
+    asyncio.run(serve(app, config))
 
-if __name__ == '__main__':
-    app.run(port=8000)
+# if __name__ == '__main__':
+#     app.run(port=8000)
