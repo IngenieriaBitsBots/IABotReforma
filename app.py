@@ -21,6 +21,7 @@ import os
 from hypercorn.asyncio import serve
 from hypercorn.config import Config
 import asyncio
+import html
 
 call_guid_to_caller = defaultdict(lambda: "+573000000000")
 
@@ -70,8 +71,8 @@ async def iniciar_reconocimiento(call_connection_client, target_participant):
         target_participant=target_participant,
         play_prompt=None,
         interrupt_prompt=True,
-        initial_silence_timeout=3,
-        end_silence_timeout=2,
+        initial_silence_timeout=6,
+        end_silence_timeout=3,
         speech_language="es-CO",
         operation_context="reforma_loop"
     )
